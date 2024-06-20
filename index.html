@@ -4,16 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="java.js"></script>
   </head>
   <body>
     <h1>
       ¿Tienes que hacer una paella y no sabes las cantidades y los precios?
     </h1>
-    <h2>
-      Ingresa la cantidad de personas y te decimos la cantidad exacta de
-      ingredientes y su costo total.
-    </h2>
-    <button onclick="calcular()">Calcular</button>
+    <button onclick="inicio()">Empezar</button>
+    <div id="main"></div>
+    <button id="calcularButton" hidden="true" onclick="calcular()">Calcular</button>
+    <div id="resultado"></div>
+    <script src="java.js"></script>
   </body>
 </html>
