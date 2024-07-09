@@ -16,6 +16,18 @@ const porcionAceiteOlivaPersona = 1.5;
 const COSTO_PAELLA_ADULTO = 10000;
 const COSTO_PAELLA_MENOR = 5000;
 
+function cargarDatos() {
+  fetch("/data.json")
+    .then((response) => response.json())
+    .then((data) => {
+      for (paella of data) {
+        console.log(paella);
+      }
+    });
+}
+
+cargarDatos();
+
 class Paella {
   constructor() {
     this.adulto = true;
