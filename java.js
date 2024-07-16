@@ -16,6 +16,16 @@ const porcionAceiteOlivaPersona = 1.5;
 const COSTO_PAELLA_ADULTO = 10000;
 const COSTO_PAELLA_MENOR = 5000;
 
+// let boton = document.getElementById("calcularButton");
+// console.log(boton);
+// boton.addEventListener("click", () => {
+//   Toastify({
+//     text: "Calculando cantidades",
+//     duration: 3000,
+//   }).showToast();
+//   calcular();
+// });
+
 function cargarDatos() {
   fetch("/data.json")
     .then((response) => response.json())
@@ -66,19 +76,40 @@ class Paella {
 }
 
 function inicio() {
-  const contenedor = document.getElementsByTagName("div");
+  const contenedor = document.getElementById("calculadora");
   const parrafo = document.createElement("p");
   parrafo.innerHTML = "<h2>Ingresa cantidad de adultos<h2>";
-  contenedor[0].appendChild(parrafo);
+  contenedor.appendChild(parrafo);
   const inputNumber = crearInput("adultos");
-  contenedor[0].appendChild(inputNumber);
+  contenedor.appendChild(inputNumber);
   const parrafoNinos = document.createElement("p");
   parrafoNinos.innerHTML = "<h2>Ingresa cantidad de niños<h2>";
-  contenedor[0].appendChild(parrafoNinos);
+  contenedor.appendChild(parrafoNinos);
   const inputNumberNinos = crearInput("ninos");
-  contenedor[0].appendChild(inputNumberNinos);
+  contenedor.appendChild(inputNumberNinos);
   const button = document.getElementById("calcularButton");
-  button.hidden = false;
+  // button.hidden = false;
+  const botonCalcular = crearBoton("calcularButton");
+  contenedor.appendChild(botonCalcular);
+
+  botonCalcular.addEventListener("click", () => {
+    Toastify({
+      text: "Calculando cantidades",
+      duration: 3000,
+    }).showToast();
+    calcular();
+  });
+}
+
+function crearBoton(id) {
+  const boton = document.createElement("button");
+  boton.innerHTML = "Calcular";
+  boton.type = "button";
+  boton.id = id;
+  boton.className = "btn btn-outline-secondary btn-lg px-4";
+  // boton.onclick = calcular();
+
+  return boton;
 }
 
 function crearInput(id) {
