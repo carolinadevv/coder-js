@@ -16,22 +16,13 @@ const porcionAceiteOlivaPersona = 1.5;
 const COSTO_PAELLA_ADULTO = 10000;
 const COSTO_PAELLA_MENOR = 5000;
 
-// let boton = document.getElementById("calcularButton");
-// console.log(boton);
-// boton.addEventListener("click", () => {
-//   Toastify({
-//     text: "Calculando cantidades",
-//     duration: 3000,
-//   }).showToast();
-//   calcular();
-// });
-
 function cargarDatos() {
   fetch("/data.json")
     .then((response) => response.json())
     .then((data) => {
       for (paella of data) {
         console.log(paella);
+        // TODO: falta guardar en algun lado y mostrar en pantalla los tipos de paella
       }
     });
 }
@@ -78,17 +69,16 @@ class Paella {
 function inicio() {
   const contenedor = document.getElementById("calculadora");
   const parrafo = document.createElement("p");
-  parrafo.innerHTML = "<h2>Ingresa cantidad de adultos<h2>";
+  parrafo.innerHTML = "<h2 id='txtAdultos'>Ingresa cantidad de adultos<h2>";
   contenedor.appendChild(parrafo);
   const inputNumber = crearInput("adultos");
   contenedor.appendChild(inputNumber);
   const parrafoNinos = document.createElement("p");
-  parrafoNinos.innerHTML = "<h2>Ingresa cantidad de niños<h2>";
+  parrafoNinos.innerHTML = "<h2 id='txtNinos'>Ingresa cantidad de niños<h2>";
   contenedor.appendChild(parrafoNinos);
   const inputNumberNinos = crearInput("ninos");
   contenedor.appendChild(inputNumberNinos);
   const button = document.getElementById("calcularButton");
-  // button.hidden = false;
   const botonCalcular = crearBoton("calcularButton");
   contenedor.appendChild(botonCalcular);
 
@@ -107,8 +97,6 @@ function crearBoton(id) {
   boton.type = "button";
   boton.id = id;
   boton.className = "btn btn-outline-secondary btn-lg px-4";
-  // boton.onclick = calcular();
-
   return boton;
 }
 
@@ -118,12 +106,16 @@ function crearInput(id) {
   inputNumber.min = 0;
   inputNumber.step = 1;
   inputNumber.id = id;
+  inputNumber.className = "form-control";
   return inputNumber;
 }
 
 function calcular() {
   let comensalesAdultos = document.getElementById("adultos").value;
   let comensalesMenores = document.getElementById("ninos").value;
+
+  console.log(comensalesAdultos);
+  console.log(comensalesMenores);
 
   const paellas = [];
 
@@ -135,13 +127,13 @@ function calcular() {
   for (let index = 0; index < comensalesMenores; index++) {
     const paella = new Paella();
     paella.paellaMenores();
-    paella.paellaMenores();
     paellas.push(paella);
   }
 
   const paellasAdultos = paellas.filter((paella) => paella.adulto === true);
   const paellasMenores = paellas.filter((paella) => paella.adulto === false);
 
+  //TODO: todos estos ingredientes esto hay que guardarlo en algun lado
   const arrozTotal = paellas.reduce(
     (acumulador, paella) => acumulador + paella.arroz,
     0
@@ -204,65 +196,14 @@ function calcular() {
   guardarResultado(paellasAdultos, paellasMenores);
 
   mostrarLocalStorage();
-
-  // alert(
-  //   "Arroz total: " +
-  //     arrozTotal +
-  //     " gr " +
-  //     ", Sepia total: " +
-  //     sepiaTotal +
-  //     " gr " +
-  //     ", Calamar total: " +
-  //     calamarTotal +
-  //     " gr " +
-  //     ", Caldo total: " +
-  //     caldoTotal +
-  //     " gr " +
-  //     ", Cebolla total: " +
-  //     cebollaTotal +
-  //     " gr " +
-  //     ", Guisante total: " +
-  //     guisanteTotal +
-  //     " gr " +
-  //     ", Judia Verde total: " +
-  //     judiaVerdeTotal +
-  //     " gr " +
-  //     ", Mejillon total: " +
-  //     mejillonTotal +
-  //     " gr " +
-  //     ", Langostino total: " +
-  //     langostinoTotal +
-  //     " gr " +
-  //     ", Almeja total: " +
-  //     almejaTotal +
-  //     " gr " +
-  //     ", Ajo total: " +
-  //     ajoTotal +
-  //     " gr " +
-  //     ", Tomate total: " +
-  //     tomateTotal +
-  //     " gr " +
-  //     ", Azafran total: " +
-  //     azafranTotal +
-  //     " gr " +
-  //     ", Aceite total: " +
-  //     aceiteTotal +
-  //     " gr "
-  // );
-
-  // alert(
-  //   "Costo total: $" +
-  //     (paellasAdultos.length * COSTO_PAELLA_ADULTO +
-  //       paellasMenores.length * COSTO_PAELLA_MENOR)
-  // );
 }
 
 function monstrarResultado(paellasAdultos, paellasMenores) {
   const resultado = document.getElementById("resultado");
   const parrafo = document.createElement("p");
   parrafo.innerHTML = "<h2>Total paellas<h2>";
-  const total = `Adulto: ${paellasAdultos.length}, Menores: ${paellasMenores.length}`;
-  resultado.append(total);
+  // const total = `Adulto: ${paellasAdultos.length}, Menores: ${paellasMenores.length}`;
+  // resultado.append(total);
   const costoTotal = `Costo paella adulto: ${
     paellasAdultos.length * COSTO_PAELLA_ADULTO
   }, Costo paella menores: ${paellasMenores.length * COSTO_PAELLA_MENOR}`;
@@ -272,12 +213,48 @@ function monstrarResultado(paellasAdultos, paellasMenores) {
 function guardarResultado(paellasAdultos, paellasMenores) {
   const jsonPaellaAdulto = JSON.stringify(paellasAdultos);
   localStorage.setItem("paellaAdulto", jsonPaellaAdulto);
+  const jsonPaellaMenor = JSON.stringify(paellasMenores);
+  localStorage.setItem("paellaMenor", jsonPaellaMenor);
 }
 
 function mostrarLocalStorage() {
   const paellaAdulto = localStorage.getItem("paellaAdulto");
-  const json = JSON.parse(paellaAdulto);
-  console.log(json[0]);
+  const jsonAdulto = JSON.parse(paellaAdulto);
+  const paellaMenor = localStorage.getItem("paellaMenor");
+  const jsonMenor = JSON.parse(paellaMenor);
   const resultado = document.getElementById("resultado");
-  resultado.append(`Cantidad Arroz: ${json[0].arroz}`);
+  console.log(jsonAdulto, jsonMenor);
+  resultado.append(
+    `Cantidad Arroz: ${
+      jsonAdulto && jsonAdulto.some() ? jsonAdulto[0].arroz : ""
+    }, ${jsonMenor.some() ? jsonMenor[0].arroz : ""} `
+  );
+  // TODO: Esto hay que arreglarlo
+  // resultado.append(`Cantidad Sepia: ${json[0].sepia}`);
+  // resultado.append(`Cantidad Calamar: ${json[0].calamar}`);
+  // resultado.append(`Cantidad Caldo: ${json[0].cebolla}`);
+  // resultado.append(`Cantidad Guisante: ${json[0].guisante}`);
+  // resultado.append(`Cantidad Judía Verde: ${json[0].judiaVerde}`);
+  // resultado.append(`Cantidad Mejillón: ${json[0].mejillon}`);
+  // resultado.append(`Cantidad Langostino: ${json[0].langostino}`);
+  // resultado.append(`Cantidad Almeja: ${json[0].almeja}`);
+  // resultado.append(`Cantidad Ajo: ${json[0].ajo}`);
+  // resultado.append(`Cantidad Tomate: ${json[0].tomate}`);
+  // resultado.append(`Cantidad Azafrán: ${json[0].azafran}`);
+  // resultado.append(`Cantidad Aceite: ${json[0].aceite}`);
+}
+
+function resetear() {
+  localStorage.removeItem("paellaAdulto");
+  localStorage.removeItem("paellaMenor");
+  const inputNinos = document.getElementById("ninos");
+  const inputAdultos = document.getElementById("adultos");
+  const txtAdultos = document.getElementById("txtAdultos");
+  const txtNinos = document.getElementById("txtNinos");
+  const btnCalcular = document.getElementById("calcularButton");
+  inputNinos.outerHTML = txtNinos.outerHTML = "";
+  inputAdultos.outerHTML = txtAdultos.outerHTML = "";
+  btnCalcular.outerHTML = "";
+  const resultado = document.getElementById("resultado");
+  resultado.innerHTML = "";
 }
