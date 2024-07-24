@@ -1,4 +1,14 @@
 [
-  { "id": 1, "tipo": "valenciana", "arroz": 75 },
-  { "id": 2, "tipo": "gallega" }
+  {
+    "id": 1,
+    "tipo": "valenciana",
+    "ingredientes": "Pollo, arroz, caldo, cebolla, guisante, judia verde, ajo, tomate, azafran, aceite de oliva.",
+    "precio": 8000
+  },
+  {
+    "id": 2,
+    "tipo": "gallega",
+    "ingredientes": "Sepia, Calamar, Mejillon, Langostino, Almeja, arroz, caldo, cebolla, guisante, judia verde, ajo, tomate, azafran, aceite de oliva.",
+    "precio": 10000
+  }
 ]

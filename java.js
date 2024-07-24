@@ -46,7 +46,9 @@ class Paella {
     this.tomate = porcionTomatePersona;
     this.azafran = porcionAzafranPersona;
     this.aceite = porcionAceiteOlivaPersona;
+    this.precio = null;
   }
+
   paellaMenores() {
     this.adulto = false;
     this.arroz = this.arroz / 2;
@@ -63,6 +65,7 @@ class Paella {
     this.tomate = this.tomate / 2;
     this.azafran = this.azafran / 2;
     this.aceite = this.aceite / 2;
+    this.precio = this.precio / 2;
   }
 }
 
