@@ -18,16 +18,7 @@
     />
   </head>
   <body>
-    <!-- <h1>
-      ¿Tienes que hacer una paella y no sabes las cantidades y los precios?
-    </h1>
-    <button onclick="inicio()">Empezar</button>
-    <div id="main"></div>
-    <button id="calcularButton" hidden="true" onclick="calcular()">
-      Calcular
-    </button>
-
-    <div id="resultado"></div> -->
+    <button id="darkModeBoton" class="btn btn-dark">Dark Mode</button>
     <main>
       <div class="container col-xxl-8 px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
@@ -42,9 +33,7 @@
             />
           </div>
           <div class="col-lg-6">
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
-              Calculadora de paellas
-            </h1>
+            <h1 class="display-5 fw-bold lh-1 mb-3">Calculadora de paellas</h1>
             <p class="lead">
               ¿Vas a cocinar una paella pero no sabes cantidades precios? Haz
               click en Calcular, ingresa la cantidad de adultos y niños, y
@@ -72,6 +61,9 @@
       </div>
       <div class="container col-xxl-8 px-4 py-5" id="paellas"></div>
       <div class="container col-xxl-8 px-4 py-5" id="calculadora"></div>
+      <div class="container mt-4">
+        <div id="resultado" class="row"></div>
+      </div>
       <div class="container col-xxl-8 px-4 py-5" id="resultado"></div>
     </main>
 

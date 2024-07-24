@@ -28,6 +28,38 @@ function cargarDatos() {
 }
 cargarDatos();
 
+function darkMode() {
+  document.addEventListener("DOMContentLoaded", () => {
+    const darkModeBoton = document.getElementById("darkModeBoton");
+    const body = document.body;
+
+    const darkMode = localStorage.getItem("darkMode");
+    if (darkMode === "enabled") {
+      body.classList.add("dark-mode");
+      darkModeBoton.textContent = "Light Mode";
+      darkModeBoton.classList.add("btn-light");
+    }
+
+    const toggleDarkMode = () => {
+      body.classList.toggle("dark-mode");
+      if (body.classList.contains("dark-mode")) {
+        localStorage.setItem("darkMode", "enabled");
+        darkModeBoton.textContent = "Light Mode";
+        darkModeBoton.classList.remove("btn-dark");
+        darkModeBoton.classList.add("btn-light");
+      } else {
+        localStorage.setItem("darkMode", "disabled");
+        darkModeBoton.textContent = "Dark Mode";
+        darkModeBoton.classList.remove("btn-light");
+        darkModeBoton.classList.add("btn-dark");
+      }
+    };
+
+    darkModeBoton.addEventListener("click", toggleDarkMode);
+  });
+}
+darkMode();
+
 class Paella {
   constructor() {
     this.adulto = true;
@@ -69,7 +101,7 @@ class Paella {
 }
 
 function inicio() {
-  document.getElementById("botonEmpezar").disabled = "true";
+  document.getElementById("botonEmpezar").disabled = true;
   crearSeccionPaella();
   crearSeccionCalculadora();
 }
@@ -94,7 +126,7 @@ function crearSeccionCalculadora() {
       text: "Calculando cantidades",
       duration: 3000,
     }).showToast();
-    document.getElementById("calcularButton").disabled = "true";
+    document.getElementById("calcularButton").disabled = true;
     calcular();
   });
 }
@@ -140,11 +172,7 @@ function calcular() {
   let comensalesAdultos = document.getElementById("adultos").value;
   let comensalesMenores = document.getElementById("ninos").value;
 
-  console.log(comensalesAdultos);
-  console.log(comensalesMenores);
-
   const paellas = [];
-
   for (let index = 0; index < comensalesAdultos; index++) {
     const paella = new Paella();
     paellas.push(paella);
@@ -168,7 +196,6 @@ function calcular() {
 
 function monstrarResultado(paellasAdultos, paellasMenores) {
   const precio = PAELLAS_TIPOS.find((x) => x.id == 1).precio;
-  console.log(precio);
   const resultado = document.getElementById("resultado");
   const parrafo = document.createElement("p");
   parrafo.innerHTML = "<h2>Total paellas<h2>";
@@ -188,17 +215,119 @@ function guardarResultado(paellasAdultos, paellasMenores) {
 
 function mostrarLocalStorage() {
   const paellaAdulto = localStorage.getItem("paellaAdulto");
-  const jsonAdulto = JSON.parse(paellaAdulto);
+  const jsonAdulto = paellaAdulto ? JSON.parse(paellaAdulto) : null;
+
   const paellaMenor = localStorage.getItem("paellaMenor");
-  const jsonMenor = JSON.parse(paellaMenor);
+  const jsonMenor = paellaMenor ? JSON.parse(paellaMenor) : null;
+
   const resultado = document.getElementById("resultado");
-  console.log(jsonAdulto, jsonMenor);
-  if (jsonAdulto && jsonAdulto.some && jsonMenor && jsonMenor.some) {
-    resultado.append(
-      ` Cantidad Arroz gr: ${jsonAdulto[0].arroz + jsonMenor[0].arroz}`,
-      ` Cantidad Sepia gr: ${jsonAdulto[0].sepia + jsonMenor[0].sepia}`
-    );
-  }
+
+  const card = document.createElement("div");
+  card.className = "card mb-4";
+
+  const cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+  const ingredientes = [
+    {
+      nombre: "Arroz",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].arroz : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].arroz : 0),
+    },
+    {
+      nombre: "Sepia",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].sepia : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].sepia : 0),
+    },
+    {
+      nombre: "Calamar",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].calamar : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].calamar : 0),
+    },
+    {
+      nombre: "Caldo",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].caldo : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].caldo : 0),
+    },
+    {
+      nombre: "Cebolla",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].cebolla : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].cebolla : 0),
+    },
+    {
+      nombre: "Guisante",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].guisante : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].guisante : 0),
+    },
+    {
+      nombre: "Judia Verde",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].judiaVerde : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].judiaVerde : 0),
+    },
+    {
+      nombre: "Mejillón",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].mejillon : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].mejillon : 0),
+    },
+    {
+      nombre: "Langostino",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].langostino : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].langostino : 0),
+    },
+    {
+      nombre: "Almeja",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].almeja : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].almeja : 0),
+    },
+    {
+      nombre: "Ajo",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].ajo : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].ajo : 0),
+    },
+    {
+      nombre: "Tomate",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].tomate : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].tomate : 0),
+    },
+    {
+      nombre: "Azafrán",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].azafran : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].azafran : 0),
+    },
+    {
+      nombre: "Aceite",
+      cantidad:
+        (jsonAdulto && jsonAdulto.length > 0 ? jsonAdulto[0].aceite : 0) +
+        (jsonMenor && jsonMenor.length > 0 ? jsonMenor[0].aceite : 0),
+    },
+  ];
+
+  const listaIngredientes = document.createElement("ul");
+  listaIngredientes.className = "list-group list-group-flush";
+
+  ingredientes.forEach((ingrediente) => {
+    const listItem = document.createElement("li");
+    listItem.className = "list-group-item";
+    listItem.innerText = `Cantidad ${ingrediente.nombre} gr: ${ingrediente.cantidad}`;
+    listaIngredientes.appendChild(listItem);
+  });
+
+  cardBody.innerHTML = '<h5 class="card-title">Ingredientes Totales</h5>';
+  card.appendChild(cardBody);
+  card.appendChild(listaIngredientes);
+  resultado.appendChild(card);
 }
 
 function resetear() {
@@ -214,6 +343,7 @@ function resetear() {
   btnCalcular.outerHTML = "";
   const resultado = document.getElementById("resultado");
   resultado.innerHTML = "";
-  document.getElementById("calcularButton").disabled = "false";
-  document.getElementById("botonEmpezar").disabled = "false";
+  const paellas = document.getElementById("paellas");
+  paellas.innerHTML = "";
+  document.getElementById("botonEmpezar").disabled = false;
 }
